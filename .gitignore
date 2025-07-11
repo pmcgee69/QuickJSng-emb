@@ -31,6 +31,7 @@
 *.out
 *.app
 
+*.local
 __history/
 __recovery/
 Win64x/
