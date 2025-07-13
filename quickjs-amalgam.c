@@ -1,4 +1,4 @@
-#if defined(QJS_BUILD_LIBC) && defined(__linux__) && !defined(_GNU_SOURCE)
+﻿#if defined(QJS_BUILD_LIBC) && defined(__linux__) && !defined(_GNU_SOURCE)
 #define _GNU_SOURCE
 #endif
 /*
@@ -106,7 +106,13 @@ extern "C" {
 #include <malloc_np.h>
 #elif defined(_WIN32)
 #include <windows.h>
+#include <malloc.h>
+#  define INFINITY __builtin_inf()
+#  ifdef _WIN32
+   int fesetround(int round) { return 0; }
+#  endif
 #endif
+
 #if !defined(_WIN32) && !defined(EMSCRIPTEN) && !defined(__wasi__)
 #include <errno.h>
 #include <pthread.h>
@@ -7127,7 +7133,7 @@ JS_EXTERN uintptr_t js_std_cmd(int cmd, ...);
 #include <string.h>
 #include <assert.h>
 #if !defined(_MSC_VER)
-#include <sys/time.h>
+//#include <sys/time.h>
 #if defined(_WIN32)
 #include <timezoneapi.h>
 #endif
@@ -7164,10 +7170,10 @@ JS_EXTERN uintptr_t js_std_cmd(int cmd, ...);
 // atomic_store etc. are completely busted in recent versions of tcc;
 // somehow the compiler forgets to load |ptr| into %rdi when calling
 // the __atomic_*() helpers in its lib/stdatomic.c and lib/atomic.S
-#if !defined(__TINYC__) && !defined(EMSCRIPTEN) && !defined(__wasi__) && !__STDC_NO_ATOMICS__
+//#if !defined(__TINYC__) && !defined(EMSCRIPTEN) && !defined(__wasi__) && !__STDC_NO_ATOMICS__
 
-#define CONFIG_ATOMICS
-#endif
+//#define CONFIG_ATOMICS
+//#endif
 
 #ifndef __GNUC__
 #define __extension__
@@ -67361,7 +67367,7 @@ uintptr_t js_std_cmd(int cmd, ...) {
 #include <string.h>
 #include <time.h>
 #if !defined(_MSC_VER)
-#include <sys/time.h>
+//#include <sys/time.h>
 #endif
 #if defined(_WIN32)
 #include <windows.h>
